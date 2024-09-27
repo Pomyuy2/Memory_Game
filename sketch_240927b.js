@@ -4,77 +4,66 @@ let numbers = [];
 let flip = [];
 let lastClickedIndex = -1; // To store the last clicked index
 let secondLastClickedIndex = -1; // To store the second last clicked index
+let rows, cols, w, h;
 
 function setup() {
-  createCanvas(400, 200);
+  createCanvas(700, 500);
   noLoop();
-  let rows0 = 2;
-  let cols0 = 5;
-  let w0 = width / cols0;
-  let h0 = height / rows0;
-
-  numbers = generateRandomNumbers(5);
-
-  for (let i = 0; i < rows0; i++) {
-    for (let j = 0; j < cols0; j++) {
-      let index = i * cols0 + j; 
-      let button = createButton(''); 
-      button.position(j * w0 + 50, i * h0 + 100);
-      button.size(w0, h0);
-      button.mousePressed(() => flipNumber(index, button));
-      buttons.push(button); 
-      flip.push(false); 
-    }
-  }
   
-  createCanvas(500, 400);
-  noLoop();
-  let rows = 4;
-  let cols = 5;
-  let w = width / cols;
-  let h = height / rows;
+  createGameModeButtons();
+  setGameMode('Easy');
+}
 
-  numbers = generateRandomNumbers(10);
+function createGameModeButtons() {
+  let buttonEasy = createButton('Easy');
+  buttonEasy.position(50, 50);
+  buttonEasy.mousePressed(() => setGameMode('Easy'));
+
+  let buttonMedium = createButton('Medium');
+  buttonMedium.position(150, 50);
+  buttonMedium.mousePressed(() => setGameMode('Medium'));
+
+  let buttonHard = createButton('Hard');
+  buttonHard.position(250, 50);
+  buttonHard.mousePressed(() => setGameMode('Hard'));
+}
+
+function setGameMode(mode) {
+  buttons.forEach(button => button.remove());
+  buttons = [];
+  flip = [];
+
+  switch (mode) {
+    case 'Easy':
+      rows = 2;
+      cols = 5;
+      break;
+    case 'Medium':
+      rows = 4;
+      cols = 5;
+      break;
+    case 'Hard':
+      rows = 8;
+      cols = 5;
+      break;
+  }
+
+  w = width / cols;
+  h = height / rows;
+
+  numbers = generateRandomNumbers(rows * cols / 2);
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      let index = i * cols + j; 
-      let button = createButton(''); 
-      button.position(j * w + 530, i * h + 100);
+      let index = i * cols + j;
+      let button = createButton('');
+      button.position(j * w + 500, i * h + 150);
       button.size(w, h);
       button.mousePressed(() => flipNumber(index, button));
-      buttons.push(button); 
-      flip.push(false); 
+      buttons.push(button);
+      flip.push(false);
     }
   }
-  
-  createCanvas(500, 600);
-  noLoop();
-  let rows2 = 8;
-  let cols2 = 5;
-  let w2 = width / cols2;
-  let h2 = height / rows2;
-
-  numbers = generateRandomNumbers(20);
-
-  for (let i = 0; i < rows2; i++) {
-    for (let j = 0; j < cols2; j++) {
-      let index = i * cols2 + j; 
-      let button = createButton(''); 
-      button.position(j * w2 + 1100, i * h2 + 100);
-      button.size(w2, h2);
-      button.mousePressed(() => flipNumber(index, button));
-      buttons.push(button); 
-      flip.push(false); 
-    }
-  }
-  
-  let button2 = createButton('Easy');
-  button2.position(225, 50);
-  let button3 = createButton('Medium');
-  button3.position(750, 50);
-  let button4 = createButton('Hard');
-  button4.position(1325, 50);
 }
 
 function generateRandomNumbers(pairCount) {
