@@ -5,6 +5,27 @@ let lastClickedIndex = -1; // To store the last clicked index
 let secondLastClickedIndex = -1; // To store the second last clicked index
 
 function setup() {
+  createCanvas(400, 200);
+  noLoop();
+  let rows0 = 2;
+  let cols0 = 5;
+  let w0 = width / cols0;
+  let h0 = height / rows0;
+
+  numbers = generateRandomNumbers(5);
+
+  for (let i = 0; i < rows0; i++) {
+    for (let j = 0; j < cols0; j++) {
+      let index = i * cols0 + j; 
+      let button = createButton(''); 
+      button.position(j * w0 + 50, i * h0 + 100);
+      button.size(w0, h0);
+      button.mousePressed(() => flipNumber(index, button));
+      buttons.push(button); 
+      flip.push(false); 
+    }
+  }
+  
   createCanvas(500, 400);
   noLoop();
   let rows = 4;
@@ -18,13 +39,41 @@ function setup() {
     for (let j = 0; j < cols; j++) {
       let index = i * cols + j; 
       let button = createButton(''); 
-      button.position(j * w + 500, i * h + 50);
+      button.position(j * w + 530, i * h + 100);
       button.size(w, h);
       button.mousePressed(() => flipNumber(index, button));
       buttons.push(button); 
       flip.push(false); 
     }
   }
+  
+  createCanvas(500, 600);
+  noLoop();
+  let rows2 = 8;
+  let cols2 = 5;
+  let w2 = width / cols2;
+  let h2 = height / rows2;
+
+  numbers = generateRandomNumbers(20);
+
+  for (let i = 0; i < rows2; i++) {
+    for (let j = 0; j < cols2; j++) {
+      let index = i * cols2 + j; 
+      let button = createButton(''); 
+      button.position(j * w2 + 1100, i * h2 + 100);
+      button.size(w2, h2);
+      button.mousePressed(() => flipNumber(index, button));
+      buttons.push(button); 
+      flip.push(false); 
+    }
+  }
+  
+  let button2 = createButton('Easy');
+  button2.position(225, 50);
+  let button3 = createButton('Medium');
+  button3.position(750, 50);
+  let button4 = createButton('Hard');
+  button4.position(1325, 50);
 }
 
 function generateRandomNumbers(pairCount) {
