@@ -78,28 +78,36 @@ function generateRandomNumbers(pairCount) {
 }
 
 function flipNumber(index, button) {
-  if (!flip[index]) {
-    button.html(verticalBars);
+  if (!flip[index]) { 
+
+    let num = numbers[index];
+    let verticalBars = '|'.repeat(num);
+    
+    // Display bars instead of numbers
+    button.html(verticalBars); 
+    button.style('font-size', '32px'); // Increase font size for better visibility
+    button.style('text-align', 'center'); // Center the bars
+    button.style('line-height', h + 'px'); // Center the bars vertically
     flip[index] = true; 
     
     // Check for a match
     if (lastClickedIndex !== -1) {
       if (numbers[lastClickedIndex] === numbers[index] && lastClickedIndex !== index) {
-        button.style('background-color', 'green'); // Change color to green
+        button.style('background-color', 'green'); // Change the background color to green for matched buttons
         buttons[lastClickedIndex].style('background-color', 'green'); // Change the previous button color to green
-        lastClickedIndex = -1; // Reset last clicked index
-        secondLastClickedIndex = -1; // Reset second last clicked index
+        lastClickedIndex = -1; // Reset lastClickedIndex
+        secondLastClickedIndex = -1; // Reset secondLastClickedIndex
       } else {
-        // If a third button is clicked and the previous two don't match
+        // If the third button is clicked and the previous two don't match
         if (secondLastClickedIndex !== -1) {
           // Flip back the last two buttons
           buttons[lastClickedIndex].html(''); // Flip back the previous button
           buttons[secondLastClickedIndex].html(''); // Flip back the second last button
           flip[lastClickedIndex] = false; // Update flip state
-          flip[secondLastClickedIndex] = false; // Update flip state 
+          flip[secondLastClickedIndex] = false; // Update flip state
         }
         // Update the clicked indexes
-        secondLastClickedIndex = lastClickedIndex; // Move the last clicked to second last
+        secondLastClickedIndex = lastClickedIndex; // Move last clicked to second last
         lastClickedIndex = index; // Update last clicked index
       }
     } else {
@@ -107,6 +115,8 @@ function flipNumber(index, button) {
     }
   }
 }
+
+  
 
 function draw() {
   
