@@ -81,7 +81,7 @@ function flipNumber(index, button) {
   if (!flip[index]) { 
 
     let num = numbers[index];
-    let verticalBars = '|'.repeat(num);
+    let verticalBars = '|'.repeat(num); // Let line equal to num in each button
     
     // Display bars instead of numbers
     button.html(verticalBars); 
