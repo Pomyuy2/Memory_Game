@@ -162,6 +162,36 @@ function findMatchPairs() {
   return matchedPairs;
 }
 
+function showHint() {
+  let matchedPairs = findMatchPairs();
+  
+  matchedPairs.forEach(pair => {
+    let [firstIndex, secondIndex] = pair;
+    buttons[firstIndex].html(numbers[firstIndex]);
+    buttons[secondIndex].html(numbers[secondIndex]);
+    
+    flip[firstIndex] = true;
+    flip[secondIndex] = true;
+    
+    buttons[firstIndex].style('background-color', 'yellow'); 
+    buttons[secondIndex].style('background-color', 'yellow'); 
+  });
+
+  setTimeout(() => {
+    matchedPairs.forEach(pair => {
+      let [firstIndex, secondIndex] = pair;
+      buttons[firstIndex].html('');
+      buttons[secondIndex].html('');
+
+      flip[firstIndex] = false;
+      flip[secondIndex] = false;
+      
+      buttons[firstIndex].style('background-color', ''); 
+      buttons[secondIndex].style('background-color', ''); 
+    });
+  }, 1000);
+}
+
 function draw() {
   
 }
