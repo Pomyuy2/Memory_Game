@@ -7,7 +7,10 @@ let secondLastClickedIndex = -1; // To store the second last clicked index
 let rows, cols, w, h;
 let startTime = 0; 
 let gameStarted = false; 
-let matchedPairsCount = 0; 
+let matchedPairsCount = 0;
+
+let playerScores = [0, 0];  // Player 1 and Player 2 scores
+let currentPlayer = 0;      // Track current player (0 = Player 1, 1 = Player 2)
 
 function setup() {
   createCanvas(700, 500);
@@ -16,6 +19,7 @@ function setup() {
   createGameModeButtons();
   createHintButton();
   setGameMode('Easy');
+  createScoreDisplay();  // Display player scores
 }
 
 function createGameModeButtons() {
@@ -126,14 +130,18 @@ function flipNumber(index, button) {
           button.style('background-color', 'green'); 
           buttons[lastClickedIndex].style('background-color', 'green');
           matchedPairsCount++;
+          playerScores[currentPlayer] += 1;  // Add a point to the player for a correct match
           
           if (matchedPairsCount === numbers.length / 2) {
             endGame();
           }
           
+          // Switch player if the match is correct
           lastClickedIndex = -1; 
-          secondLastClickedIndex = -1; 
+          secondLastClickedIndex = -1;
+          currentPlayer = 1 - currentPlayer;  // Switch player
         } else {
+          // If the guess is incorrect, no points are deducted, but the next player gets a turn
           if (secondLastClickedIndex !== -1) {
             buttons[lastClickedIndex].html(''); 
             buttons[secondLastClickedIndex].html(''); 
@@ -141,7 +149,10 @@ function flipNumber(index, button) {
             flip[secondLastClickedIndex] = false; 
           }
           secondLastClickedIndex = lastClickedIndex; 
-          lastClickedIndex = index; 
+          lastClickedIndex = index;
+          
+          // Switch player after an incorrect guess
+          currentPlayer = 1 - currentPlayer;
         }
       } else {
         lastClickedIndex = index; 
@@ -218,6 +229,32 @@ function showHint() {
       buttons[secondIndex].style('background-color', ''); 
     });
   }, 1000);
+}
+
+function createScoreDisplay() {
+  let player1ScoreLabel = createDiv('Player 1 Score:');
+  player1ScoreLabel.position(500, 100);
+  player1ScoreLabel.style('color', 'blue');
+
+  let player2ScoreLabel = createDiv('Player 2 Score:');
+  player2ScoreLabel.position(500, 130);
+  player2ScoreLabel.style('color', 'red');
+
+  let scoreDisplay1 = createDiv(playerScores[0]);
+  scoreDisplay1.position(600, 100);
+  scoreDisplay1.id('score1');
+
+  let scoreDisplay2 = createDiv(playerScores[1]);
+  scoreDisplay2.position(600, 130);
+  scoreDisplay2.id('score2');
+
+  // Update the score every 100ms
+  function updateScoreDisplay() {
+    select('#score1').html(playerScores[0]);
+    select('#score2').html(playerScores[1]);
+  }
+
+  setInterval(updateScoreDisplay, 100);
 }
 
 function draw() {
