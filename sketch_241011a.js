@@ -20,6 +20,7 @@ function setup() {
   createHintButton();
   setGameMode('Easy');
   createScoreDisplay();  // Display player scores
+  createResetButton();
 }
 
 function createGameModeButtons() {
@@ -255,6 +256,31 @@ function createScoreDisplay() {
   }
 
   setInterval(updateScoreDisplay, 100);
+}
+
+function createResetButton() {
+  let buttonReset = createButton('Reset');
+  buttonReset.position(450, 50);
+  buttonReset.mousePressed(resetGame);
+}
+
+function resetGame() {
+  // Reset scores
+  playerScores = [0, 0];
+  currentPlayer = 0;
+  
+  // Reset game state
+  setGameMode('Easy'); 
+  startTime = 0;
+  matchedPairsCount = 0;
+  gameStarted = false;
+  
+  // update score
+  select('#score1').html(playerScores[0]);
+  select('#score2').html(playerScores[1]);
+  
+  // enable button to play again
+  enableAllButtons();
 }
 
 function draw() {
