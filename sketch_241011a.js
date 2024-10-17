@@ -167,7 +167,18 @@ function flipNumber(index, button) {
 function endGame() {
   let endTime = millis();
   let timeTaken = (endTime - startTime) / 1000;
-  alert(`Congrats! You completed the game in ${timeTaken.toFixed(2)} seconds.`);
+  
+  // Check which player has the higher score
+  let winner;
+  if (playerScores[0] > playerScores[1]) {
+    winner = 'Player 1';
+  } else if (playerScores[1] > playerScores[0]) {
+    winner = 'Player 2';
+  } else {
+    winner = 'Tie!';
+  }
+  
+  alert(`${winner} wins. You completed the game in ${timeTaken.toFixed(2)} seconds.`);
 }
 
 function disableAllButtons() {
