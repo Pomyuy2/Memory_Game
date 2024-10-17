@@ -148,6 +148,20 @@ function createHintButton() {
   buttonHint.mousePressed(showHint);
 }
 
+function findMatchPairs() {
+  let matchedPairs = [];
+  
+  for (let i = 0; i < numbers.length; i++) {
+    for (let j = i + 1; j < numbers.length; j++) {
+      if (numbers[i] === numbers[j] && !flip[i] && !flip[j]) {
+        matchedPairs.push([i, j]);
+      }
+    }
+  }
+  
+  return matchedPairs;
+}
+
 function draw() {
   
 }
