@@ -112,6 +112,12 @@ function flipNumber(index, button) {
         button.html(currentBars);  // Update the button content
       }, i * 300);  // Delay of 300ms between each bar
     }
+    
+    // Show number on right bottom in button
+    let numberDisplay = createDiv(numbers[index]);
+    numberDisplay.position(button.x + button.width - 20, button.y + button.height - 25);
+    numberDisplay.style('font-size', '18px');
+    numberDisplay.style('color', 'white');
 
     // After the animation is done, check for matches
     setTimeout(() => {
