@@ -5,6 +5,9 @@ let flip = [];
 let lastClickedIndex = -1; // To store the last clicked index
 let secondLastClickedIndex = -1; // To store the second last clicked index
 let rows, cols, w, h;
+let startTime = 0; 
+let gameStarted = false; 
+let matchedPairsCount = 0; 
 
 function setup() {
   createCanvas(700, 500);
@@ -33,6 +36,8 @@ function setGameMode(mode) {
   buttons.forEach(button => button.remove());
   buttons = [];
   flip = [];
+  gameStarted = false;
+  matchedPairsCount = 0; 
 
   switch (mode) {
     case 'Easy':
@@ -79,7 +84,12 @@ function generateRandomNumbers(pairCount) {
 }
 
 function flipNumber(index, button) {
-  if (!flip[index]) { 
+  if (!flip[index]) {
+    if (!gameStarted) {
+      startTime = millis(); 
+      gameStarted = true;  
+    }
+    
     let num = numbers[index];
     let verticalBars = '|'.repeat(num); 
 
@@ -108,7 +118,13 @@ function flipNumber(index, button) {
       if (lastClickedIndex !== -1) {
         if (numbers[lastClickedIndex] === numbers[index] && lastClickedIndex !== index) {
           button.style('background-color', 'green'); 
-          buttons[lastClickedIndex].style('background-color', 'green'); 
+          buttons[lastClickedIndex].style('background-color', 'green');
+          matchedPairsCount++;
+          
+          if (matchedPairsCount === numbers.length / 2) {
+            endGame();
+          }
+          
           lastClickedIndex = -1; 
           secondLastClickedIndex = -1; 
         } else {
@@ -128,6 +144,12 @@ function flipNumber(index, button) {
       enableAllButtons();
     }, verticalBars.length * 300); // Match checking after animation
   }
+}
+
+function endGame() {
+  let endTime = millis();
+  let timeTaken = (endTime - startTime) / 1000;
+  alert(`Congrats! You completed the game in ${timeTaken.toFixed(2)} seconds.`);
 }
 
 function disableAllButtons() {
