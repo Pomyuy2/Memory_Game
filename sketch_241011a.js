@@ -57,7 +57,7 @@ function setGameMode(mode) {
     for (let j = 0; j < cols; j++) {
       let index = i * cols + j;
       let button = createButton('');
-      button.position(j * w , i * h );
+      button.position(j * w + 500, i * h + 150);
       button.size(w, h);
       button.mousePressed(() => flipNumber(index, button));
       buttons.push(button);
@@ -79,44 +79,67 @@ function generateRandomNumbers(pairCount) {
 
 function flipNumber(index, button) {
   if (!flip[index]) { 
-
     let num = numbers[index];
-    let verticalBars = '|'.repeat(num); // Let line equal to num in each button
-    
-    // Display bars instead of numbers
-    button.html(verticalBars); 
-    button.style('font-size', '32px'); // Increase font size for better visibility
-    button.style('text-align', 'center'); // Center the bars
-    button.style('line-height', h + 'px'); // Center the bars vertically
-    flip[index] = true; 
-    
-    // Check for a match
-    if (lastClickedIndex !== -1) {
-      if (numbers[lastClickedIndex] === numbers[index] && lastClickedIndex !== index) {
-        button.style('background-color', 'green'); // Change the background color to green for matched buttons
-        buttons[lastClickedIndex].style('background-color', 'green'); // Change the previous button color to green
-        lastClickedIndex = -1; // Reset lastClickedIndex
-        secondLastClickedIndex = -1; // Reset secondLastClickedIndex
-      } else {
-        // If the third button is clicked and the previous two don't match
-        if (secondLastClickedIndex !== -1) {
-          // Flip back the last two buttons
-          buttons[lastClickedIndex].html(''); // Flip back the previous button
-          buttons[secondLastClickedIndex].html(''); // Flip back the second last button
-          flip[lastClickedIndex] = false; // Update flip state
-          flip[secondLastClickedIndex] = false; // Update flip state
-        }
-        // Update the clicked indexes
-        secondLastClickedIndex = lastClickedIndex; // Move last clicked to second last
-        lastClickedIndex = index; // Update last clicked index
-      }
-    } else {
-      lastClickedIndex = index; // Set the first clicked button
+    let verticalBars = '|'.repeat(num); 
+
+    flip[index] = true; // Mark the button as flipped
+
+    // Initialize the animation with an empty string
+    button.html(''); 
+    button.style('font-size', '32px');
+    button.style('text-align', 'center');
+    button.style('line-height', h + 'px');
+
+    // Disable interactions during animation
+    disableAllButtons();
+
+    // Function to animate the appearance of bars
+    let currentBars = '';
+    for (let i = 0; i < verticalBars.length; i++) {
+      setTimeout(() => {
+        currentBars += '|';  // Add one bar at a time
+        button.html(currentBars);  // Update the button content
+      }, i * 300);  // Delay of 300ms between each bar
     }
+
+    // After the animation is done, check for matches
+    setTimeout(() => {
+      if (lastClickedIndex !== -1) {
+        if (numbers[lastClickedIndex] === numbers[index] && lastClickedIndex !== index) {
+          button.style('background-color', 'green'); 
+          buttons[lastClickedIndex].style('background-color', 'green'); 
+          lastClickedIndex = -1; 
+          secondLastClickedIndex = -1; 
+        } else {
+          if (secondLastClickedIndex !== -1) {
+            buttons[lastClickedIndex].html(''); 
+            buttons[secondLastClickedIndex].html(''); 
+            flip[lastClickedIndex] = false; 
+            flip[secondLastClickedIndex] = false; 
+          }
+          secondLastClickedIndex = lastClickedIndex; 
+          lastClickedIndex = index; 
+        }
+      } else {
+        lastClickedIndex = index; 
+      }
+      // Enable interactions again after the check
+      enableAllButtons();
+    }, verticalBars.length * 300); // Match checking after animation
   }
 }
 
-  
+function disableAllButtons() {
+  buttons.forEach(button => {
+    button.attribute('disabled', true);
+  });
+}
+
+function enableAllButtons() {
+  buttons.forEach(button => {
+    button.removeAttribute('disabled');
+  });
+}
 
 function draw() {
   
