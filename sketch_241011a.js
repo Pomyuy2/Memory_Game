@@ -11,6 +11,7 @@ function setup() {
   noLoop();
   
   createGameModeButtons();
+  createHintButton();
   setGameMode('Easy');
 }
 
@@ -139,6 +140,12 @@ function enableAllButtons() {
   buttons.forEach(button => {
     button.removeAttribute('disabled');
   });
+}
+
+function createHintButton() {
+  let buttonHint = createButton('Hint');
+  buttonHint.position(350, 50);
+  buttonHint.mousePressed(showHint);
 }
 
 function draw() {
