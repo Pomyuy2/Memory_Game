@@ -57,7 +57,7 @@ function setGameMode(mode) {
     for (let j = 0; j < cols; j++) {
       let index = i * cols + j;
       let button = createButton('');
-      button.position(j * w + 500, i * h + 150);
+      button.position(j * w , i * h );
       button.size(w, h);
       button.mousePressed(() => flipNumber(index, button));
       buttons.push(button);
